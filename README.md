@@ -1,0 +1,2 @@
+# quickStartNodeMongo
+just a quickStart
