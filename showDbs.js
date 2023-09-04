@@ -2,8 +2,6 @@ const MongoClient = require('./connection');
 
 async function main() {
     try {
-        await MongoClient.connect();
-        console.log('connecting to db...');
         await listDatabases(MongoClient);
     } catch (e) {
         console.error(e);
