@@ -4,13 +4,13 @@ const MongoClient = require('./connection');
 async function main() {
 
     try {
-        // await findOneListingByName(MongoClient, 'The Blue Bird');
-        await findListingsWithMinimumBedroomsBathroomsAndMostRecentReviews(MongoClient
-            , {
-                minimumNumberOfBedrooms: 4,
-                minimumNumberOfBathrooms: 5,
-                maximunNumberOfResults: 8
-            });
+        await findOneListingByName(MongoClient, 'The LES Apartment');
+        // await findListingsWithMinimumBedroomsBathroomsAndMostRecentReviews(MongoClient
+        //     , {
+        //         minimumNumberOfBedrooms: 4,
+        //         minimumNumberOfBathrooms: 5,
+        //         maximunNumberOfResults: 8
+        //     });
     } finally {
         await MongoClient.close();
         console.log('closed db connection.');
@@ -20,7 +20,7 @@ async function main() {
 main().catch(console.error());
 
 async function findOneListingByName(MongoClient, nameOfListing) {
-    const result = await MongoClient.db('sample_mflix').collection('movies').findOne({ title: nameOfListing });
+    const result = await MongoClient.db('sample_airbnb').collection('listingsAndReviews').findOne({ name: nameOfListing });
 
     if (result) {
         console.log(`Found a listing in the collection with the title '${nameOfListing}':`);
