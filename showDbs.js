@@ -20,5 +20,6 @@ async function listDatabases(MongoClient) {
      */
     const databasesList = await MongoClient.db().admin().listDatabases();
     console.log("Databases:");
-    databasesList.databases.forEach(db => console.log(` - ${db.name}`));
+    console.log(databasesList);
+    // databasesList.databases.forEach(db => console.log(` - ${db.name}`));
 }
