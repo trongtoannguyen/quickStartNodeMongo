@@ -2,7 +2,7 @@ const MongoClient = require('./connection');
 
 //List Collections
 const listCollections = async (client) => {
-    const dbo = await client.db('sample_airbnb');
+    const dbo = await client.db('bank');
     try {
         const collectionsList = await dbo.listCollections().toArray();
         console.log('Collections: ');
@@ -25,7 +25,7 @@ const listCollections = async (client) => {
 
 //Create Collection
 async function createCollection(client, nameOfCollection) {
-    const dbo = await client.db('sample_airbnb');
+    const dbo = await client.db('transfers');
     try {
         const collection = await dbo.createCollection(nameOfCollection);
         console.log(`New collection named ${collection.collectionName} was created in ${collection.dbName}`);
@@ -39,7 +39,7 @@ async function createCollection(client, nameOfCollection) {
 async function main() {
     try {
         // await listCollections(MongoClient);
-        await createCollection(MongoClient, 'banking');
+        await createCollection(MongoClient, 'accounts');
     } catch (e) {
         console.error(e);
     } finally {

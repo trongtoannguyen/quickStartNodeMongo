@@ -1,10 +1,10 @@
 const MongoClient = require('./connection');
 
 //Insert ONE DOC into banking collection
-const insertOne = async (client, dataToInsert) => {
+const insertOne = async (client, dbName, collectionName, dataToInsert) => {
     try {
         console.log('Preparing for inserting document ⚙️');
-        const dbo = await client.db('sample_airbnb').collection('banking');
+        const dbo = await client.db(dbName).collection(collectionName);
         const result = await dbo.insertOne(dataToInsert);
         console.log(`Inserted document with id: ${result.insertedId}`);
     } catch (error) {
@@ -15,10 +15,10 @@ const insertOne = async (client, dataToInsert) => {
 }
 
 //Insert MANY DOCS into banking collection
-const insertMany = async (client, dataToInsert) => {
+const insertMany = async (client, dbName, collectionName, dataToInsert) => {
     try {
         console.log('Preparing for inserting document ⚙️');
-        const dbo = await client.db('sample_airbnb').collection('banking');
+        const dbo = await client.db(dbName).collection(collectionName);
         const results = await dbo.insertMany(dataToInsert);
         console.log(`Inserted document(s): ${results.insertedCount}`);
         console.log(results);
@@ -58,8 +58,9 @@ const data2 = [
 
 const main = async () => {
     try {
-        // insertOne(MongoClient, data);
-        insertMany(MongoClient, data2);
+        const dbName = "bank", collectionName = "accounts";
+        // insertOne(MongoClient, dbName, collectionName, data);
+        insertMany(MongoClient, dbName, collectionName, data2);
     } catch (error) {
         console.error(error);
     }
