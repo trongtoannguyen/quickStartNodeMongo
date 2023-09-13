@@ -1,24 +1,5 @@
 const MongoClient = require('./connection');
 
-
-async function main() {
-
-    try {
-        await findOneListingByName(MongoClient, 'The LES Apartment');
-        // await findListingsWithMinimumBedroomsBathroomsAndMostRecentReviews(MongoClient
-        //     , {
-        //         minimumNumberOfBedrooms: 4,
-        //         minimumNumberOfBathrooms: 5,
-        //         maximunNumberOfResults: 8
-        //     });
-    } finally {
-        await MongoClient.close();
-        console.log('closed db connection.');
-    }
-}
-
-main().catch(console.error());
-
 async function findOneListingByName(MongoClient, nameOfListing) {
     const result = await MongoClient.db('sample_airbnb').collection('listingsAndReviews').findOne({ name: nameOfListing });
 
@@ -66,3 +47,20 @@ async function findListingsWithMinimumBedroomsBathroomsAndMostRecentReviews(
         console.log(`No listings found with at least ${minimumNumberOfBedrooms} bedrooms and ${minimumNumberOfBathrooms} bathrooms`);
     }
 }
+
+async function main() {
+    try {
+        await findOneListingByName(MongoClient, 'The LES Apartment');
+        // await findListingsWithMinimumBedroomsBathroomsAndMostRecentReviews(MongoClient
+        //     , {
+        //         minimumNumberOfBedrooms: 4,
+        //         minimumNumberOfBathrooms: 5,
+        //         maximunNumberOfResults: 8
+        //     });
+    } finally {
+        await MongoClient.close();
+        console.log('closed db connection.');
+    }
+}
+
+main().catch(console.error());

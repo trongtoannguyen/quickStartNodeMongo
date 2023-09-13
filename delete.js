@@ -2,16 +2,19 @@ const MongoClient = require('./connection');
 
 //✅✅✅
 async function deleteListingByName(client, nameOfListing) {
-    const cached = await client.db('sample_airbnb').collection('listingsAndReviews').findOne({ name: nameOfListing });
-    const cachedID = cached._id;
-    console.log(`document with id: ${cachedID} will be deleted.`);
-    const result = await client.db('sample_airbnb').collection('listingsAndReviews').deleteOne(
-        { name: nameOfListing }
-    )
-
-    console.log(`Deleted document: ${result.deletedCount}`);
-    if (result.deletedCount > 0) {
-        console.log(`Deleted document id: ${cachedID}`);
+    try {
+        const cached = await client.db('sample_airbnb').collection('listingsAndReviews').findOne({ name: nameOfListing });
+        const cachedID = cached._id;
+        console.log(cached);
+        console.log(`document with id: ${cachedID} will be deleted.`);
+        const result = await client.db('sample_airbnb').collection('listingsAndReviews').deleteOne(
+            { name: nameOfListing }
+        )
+        if (result.deletedCount > 0) {
+            console.log(`Deleted document id: ${cachedID}`);
+        }
+    } catch (error) {
+        console.error;
     }
 }
 
@@ -31,7 +34,9 @@ async function deleteListingsFirstReviewBeforeDate(client, date) {
 //MAIN
 async function main() {
     try {
-        await deleteListingsFirstReviewBeforeDate(MongoClient, new Date('2014-01-23'));
+        const nameOfDocument = "Modern Spacious 1 Bedroom Loft";
+        await deleteListingByName(MongoClient, nameOfDocument);
+        // await deleteListingsFirstReviewBeforeDate(MongoClient, new Date('2014-01-23'));
     } catch (error) {
         console.error(error);
     } finally {
