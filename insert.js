@@ -1,4 +1,4 @@
-const MongoClient = require('./connection');
+const client = require('./connection');
 
 //Insert ONE DOC into banking collection
 const insertOne = async (client, dbName, collectionName, dataToInsert) => {
@@ -60,7 +60,7 @@ const main = async () => {
     try {
         const dbName = "bank", collectionName = "accounts";
         // insertOne(MongoClient, dbName, collectionName, data);
-        insertMany(MongoClient, dbName, collectionName, data2);
+        insertMany(client, dbName, collectionName, data2);
     } catch (error) {
         console.error(error);
     }

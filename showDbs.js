@@ -1,12 +1,14 @@
-const MongoClient = require('./connection');
+const client = require('./connection');
 
 async function main() {
     try {
-        await listDatabases(MongoClient);
+        client.connect();
+        console.log('Connecting to database...');
+        await listDatabases(client);
     } catch (e) {
         console.error(e);
     } finally {
-        await MongoClient.close();
+        await client.close();
         console.log('closed db connection.');
     }
 }
@@ -18,7 +20,7 @@ async function listDatabases(MongoClient) {
     db(); Create a new Db instance sharing the current socket connections.
     new Admin(); Create a new Admin instance 
      */
-    const databasesList = await MongoClient.db().admin().listDatabases();
+    const databasesList = await client.db().admin().listDatabases();
     console.log("Databases:");
     console.log(databasesList);
     // databasesList.databases.forEach(db => console.log(` - ${db.name}`));

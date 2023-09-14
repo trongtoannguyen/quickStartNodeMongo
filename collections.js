@@ -1,4 +1,4 @@
-const MongoClient = require('./connection');
+const client = require('./connection');
 
 //List Collections
 const listCollections = async (client) => {
@@ -25,25 +25,29 @@ const listCollections = async (client) => {
 
 //Create Collection
 async function createCollection(client, nameOfCollection) {
-    const dbo = await client.db('transfers');
+    const dbo = await client.db('bank');
     try {
         const collection = await dbo.createCollection(nameOfCollection);
         console.log(`New collection named ${collection.collectionName} was created in ${collection.dbName}`);
     } catch (error) {
         throw error.message;
     } finally {
-        await MongoClient.close();
+        await client.close();
     }
 }
 
 async function main() {
     try {
-        // await listCollections(MongoClient);
-        await createCollection(MongoClient, 'accounts');
+        // Connect to database
+        client.connect();
+        console.log('Connecting to db...');
+        // await listCollections(client);
+        //Create Collection named transfers.
+        await createCollection(client, 'transfers');
     } catch (e) {
         console.error(e);
     } finally {
-        await MongoClient.close();
+        await client.close();
         console.log('closed db connection.');
     }
 }

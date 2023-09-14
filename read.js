@@ -1,7 +1,7 @@
-const MongoClient = require('./connection');
+const client = require('./connection');
 
-async function findOneListingByName(MongoClient, nameOfListing) {
-    const result = await MongoClient.db('sample_airbnb').collection('listingsAndReviews').findOne({ name: nameOfListing });
+async function findOneListingByName(client, nameOfListing) {
+    const result = await client.db('sample_airbnb').collection('listingsAndReviews').findOne({ name: nameOfListing });
 
     if (result) {
         console.log(`Found a listing in the collection with the title '${nameOfListing}':`);
@@ -12,12 +12,12 @@ async function findOneListingByName(MongoClient, nameOfListing) {
 }
 
 async function findListingsWithMinimumBedroomsBathroomsAndMostRecentReviews(
-    MongoClient
+    client
     , { minimumNumberOfBedrooms = 0,
         minimumNumberOfBathrooms = 0,
         maximunNumberOfResults = Number.MAX_SAFE_INTEGER
     }) {
-    const cursor = await MongoClient.db('sample_airbnb').collection('listingsAndReviews').find({
+    const cursor = await client.db('sample_airbnb').collection('listingsAndReviews').find({
         bedrooms: { $gte: minimumNumberOfBedrooms },
         bathrooms: { $gte: minimumNumberOfBathrooms },
     })
@@ -41,7 +41,6 @@ async function findListingsWithMinimumBedroomsBathroomsAndMostRecentReviews(
             console.log(`   bedrooms: ${result.bedrooms}`);
             console.log(`   bathrooms: ${result.bathrooms}`);
             console.log(`   most recent review date: ${date}`);
-            console.log(`   Type of Date: ${typeof (date)}`);
         });
     } else {
         console.log(`No listings found with at least ${minimumNumberOfBedrooms} bedrooms and ${minimumNumberOfBathrooms} bathrooms`);
@@ -50,15 +49,19 @@ async function findListingsWithMinimumBedroomsBathroomsAndMostRecentReviews(
 
 async function main() {
     try {
-        await findOneListingByName(MongoClient, 'The LES Apartment');
-        // await findListingsWithMinimumBedroomsBathroomsAndMostRecentReviews(MongoClient
-        //     , {
-        //         minimumNumberOfBedrooms: 4,
-        //         minimumNumberOfBathrooms: 5,
-        //         maximunNumberOfResults: 8
-        //     });
+        //Connect to db
+        client.connect();
+        console.log('Connecting to db...');
+
+        // await findOneListingByName(client, 'The LES Apartment');
+        await findListingsWithMinimumBedroomsBathroomsAndMostRecentReviews(client
+            , {
+                minimumNumberOfBedrooms: 4,
+                minimumNumberOfBathrooms: 5,
+                maximunNumberOfResults: 8
+            });
     } finally {
-        await MongoClient.close();
+        await client.close();
         console.log('closed db connection.');
     }
 }
