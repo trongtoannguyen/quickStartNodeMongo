@@ -39,7 +39,9 @@ async function createReservation(client, account_id_sender, account_id_receiver,
             if (checkReceiver === null)
                 throw new Error("Problem with receiver account");
 
-            // Define the sequence of operations to perform inside the transactions
+            // Define the sequence of operations to perform inside the transactions, passing the session object to each operation in the transactions.
+            // Important:: You must pass the session to each of the operations   
+
             //Step1: update sender balance
             const updateSenderResults = await accounts.updateOne(
                 { accountId: account_id_sender },
@@ -65,7 +67,8 @@ async function createReservation(client, account_id_sender, account_id_receiver,
                 transfer_id: "TR" + Math.floor(Math.random() * 100000),
                 transaction_amount: transaction_amount,
                 from_account: account_id_sender,
-                to_account: account_id_receiver
+                to_account: account_id_receiver,
+                timestamp: new Date()
             };
             const insertTransferResults = await transfers.insertOne(
                 transferInfomation,
@@ -131,4 +134,16 @@ async function main() {
 }
 
 main();
+
+/*
+1. Start a session
+
+2. Start a transaction, specifying transaction options
+
+3. Perform data operations in the same session
+
+4. Commit a transaction, or cancel it if the driver encounters an error
+
+5. End a session */
+
 // Note: Multi-document transactions have a 60-sec time limit
