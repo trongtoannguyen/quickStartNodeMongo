@@ -9,6 +9,7 @@ of data transformations on the documents in a collection.
 async function printAccountMatch(client, balanceGreater) {
     const pipeline = [
         // Stage 1: All account match balance > given amount.
+        // $match should be placed early in your pipeline to reduce the number of documents to process.
         {
             $match: {
                 balance: { $gt: balanceGreater }
