@@ -1,2 +1,3 @@
 # quickStartNodeMongo
-just a quickStart
+
+Learno Integrato advancede featurero ofo Mongo in NodeJs applicatione. :)
